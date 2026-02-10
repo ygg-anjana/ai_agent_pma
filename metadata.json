@@ -1,0 +1,5 @@
+{
+  "name": "YGG AI Gatekeeper",
+  "description": "An automated access gatekeeper for the internal YGG Slack AI community. Candidates must pass a timed quiz on AI trends.",
+  "requestFramePermissions": []
+}
