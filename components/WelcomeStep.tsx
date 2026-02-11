@@ -17,10 +17,13 @@ const WelcomeStep: React.FC<WelcomeStepProps> = ({ onStart }) => {
       setError('Identity verification failed. All fields required.');
       return;
     }
-    if (!email.includes('@')) { 
-      setError('Invalid work email format.');
+    
+    // Enforce corporate domain restriction
+    if (!email.toLowerCase().endsWith('@yougotagift.com')) { 
+      setError('Access Restricted. Only @yougotagift.com emails are authorized.');
       return;
     }
+    
     onStart({ name, email });
   };
 

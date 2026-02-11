@@ -64,7 +64,7 @@ const App: React.FC = () => {
         
         // Status 0 comes from 'no-cors' mode which is an opaque success
         if (status === 0 || (status >= 200 && status < 300)) {
-          transmissionLog = `✅ Payload transmitted to HQ.`;
+          // Success: No log message needed as the main UI handles the success state.
           transmissionSuccess = true;
         } else {
           throw new Error(`HTTP ${status}`);
