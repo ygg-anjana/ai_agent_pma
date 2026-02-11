@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { QuizResult } from '../types';
-import { CheckCircle, XCircle, Copy, Terminal, Share2, Check, AlertTriangle, CloudLightning } from 'lucide-react';
+import { CheckCircle, XCircle, Copy, Terminal, Check, AlertTriangle, CloudLightning, Slack } from 'lucide-react';
 
 interface ResultStepProps {
   result: QuizResult;
@@ -9,22 +9,12 @@ interface ResultStepProps {
 
 const ResultStep: React.FC<ResultStepProps> = ({ result, onRetry }) => {
   const isPass = result.passed;
-  const [copiedLink, setCopiedLink] = useState(false);
   const [copiedJson, setCopiedJson] = useState(false);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(JSON.stringify(result.payload, null, 2));
     setCopiedJson(true);
     setTimeout(() => setCopiedJson(false), 2000);
-  };
-
-  const copyRecruitmentLink = () => {
-    // Generate a link with the ref param to maintain the "scenario"
-    const url = new URL(window.location.href);
-    url.searchParams.set('ref', 'secure_recruit');
-    navigator.clipboard.writeText(url.toString());
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   return (
@@ -53,7 +43,7 @@ const ResultStep: React.FC<ResultStepProps> = ({ result, onRetry }) => {
           </p>
           <p className="text-gray-500 text-sm mt-2 max-w-sm">
             {isPass 
-              ? "Credentials verified. Welcome to the YGG collective." 
+              ? "Congratulations! Your credentials have been verified. An invitation to the Slack channel has been dispatched." 
               : "Knowledge baseline not met. Please study the materials and re-apply."}
           </p>
         </div>
@@ -61,7 +51,7 @@ const ResultStep: React.FC<ResultStepProps> = ({ result, onRetry }) => {
         {/* Transmission Log Status */}
         {result.transmissionLog && (
           <div className={`mb-6 p-3 rounded-lg flex items-center gap-3 border ${result.transmissionSuccess ? 'bg-green-500/5 border-green-500/20 text-green-300' : 'bg-red-500/5 border-red-500/20 text-red-300'}`}>
-            {result.transmissionSuccess ? <CloudLightning className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
+            {result.transmissionSuccess ? <Slack className="w-5 h-5" /> : <AlertTriangle className="w-5 h-5" />}
             <span className="font-mono text-sm">{result.transmissionLog}</span>
           </div>
         )}
@@ -92,18 +82,8 @@ const ResultStep: React.FC<ResultStepProps> = ({ result, onRetry }) => {
             onClick={onRetry}
             className="text-sm text-gray-500 hover:text-white underline decoration-gray-700 hover:decoration-white underline-offset-4 transition-all"
           >
-            {isPass ? "Generate Another Token" : "Restart Assessment"}
+            {isPass ? "Start New Assessment" : "Restart Assessment"}
           </button>
-
-          {isPass && (
-            <button
-              onClick={copyRecruitmentLink}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-ygg-accent/10 border border-ygg-accent/50 text-ygg-accent hover:bg-ygg-accent/20 transition-all text-sm font-medium"
-            >
-              {copiedLink ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
-              <span>{copiedLink ? "Link Copied" : "Copy Recruitment Link"}</span>
-            </button>
-          )}
         </div>
       </div>
     </div>
